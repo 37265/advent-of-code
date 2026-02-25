@@ -27,3 +27,8 @@ Not knowing this was kinda screwing up my solution for Day 3 - part 1.
 
 ---
 In Python, you can use a set `{}` to avoid having to check for element uniqueness in a list (with `if x not in list`). That's especially useful when keeping track of a number of coordinates (i.e. tuples) like in the solution for Day 3 - part 1. I was using a list of dictionaries first, because I didn't know I could just store the coordinates in a tuple.
+
+---
+Python exposes an operatior for unions of sets with `|` (single pipe). I was calling `.union` before on the sets of Santa and Robo-Santa's coordinates, but `|` looks a bit cleaner. 
+
+Furthermore, it was a good idea to print the cardinality of the union of the two sets rather than conditionally adding coordinates to each set based on exclusivity. The union approach also makes both sets' contents more true to their purpose.
