@@ -46,7 +46,7 @@ For portability (and convenience when running code in VSCode), I should use this
 from pathlib import Path
 
 f = Path(__file__).with_name("input.txt")
-data = f.read_text().strip()
+data = f.read_text()[other operations]
 ```
 Rather than just doing:
 
