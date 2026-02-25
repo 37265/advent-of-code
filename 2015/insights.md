@@ -37,3 +37,20 @@ Furthermore, it was a good idea to print the cardinality of the union of the two
 Python supports multi-line expressions by either putting `\` at the end of a line, or wrapping the entire expression in parentheses.
 
 ## Day 4
+I can `import` libraries at the top of a Python script, but I knew that.
+
+---
+For portability (and convenience when running code in VSCode), I should use this:
+
+```py
+from pathlib import Path
+
+f = Path(__file__).with_name("input.txt")
+data = f.read_text().strip()
+```
+Rather than just doing:
+
+```py
+with open("input.txt") as f:
+``` 
+Otherwise, VScode looks for the input file relative to where the `python3` command lives.

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 # part 1
 def calculate_sqftage(line):
     dimensions = line_to_dimensions(line)
@@ -31,14 +33,15 @@ def line_to_dimensions(line):
         "sorted": sorted(dimensions)
     }
 
-with open("input.txt") as f:
-    data = f.readlines()
 
-    sqft_paper = 0
-    ribbon_length_ft = 0
-    for line in data:
-        sqft_paper += calculate_sqftage(line)
-        ribbon_length_ft += calculate_ribbon_length(line)
+f = Path(__file__).with_name("input.txt")
+data = f.read_text().splitlines()
 
-    print(f'The elves need to order {sqft_paper} ft² of wrapping paper.')
-    print(f'The elves need {ribbon_length_ft} feet of ribbon.')
+sqft_paper = 0
+ribbon_length_ft = 0
+for line in data:
+    sqft_paper += calculate_sqftage(line)
+    ribbon_length_ft += calculate_ribbon_length(line)
+
+print(f'The elves need to order {sqft_paper} ft² of wrapping paper.')
+print(f'The elves need {ribbon_length_ft} feet of ribbon.')

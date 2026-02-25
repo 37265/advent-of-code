@@ -1,19 +1,21 @@
-with open("input.txt") as f:
-    data = f.read().strip()
+from pathlib import Path
 
-    floor = 0
-    character_n = 1
-    basement_reached = False
+f = Path(__file__).with_name("input.txt")
+data = f.read_text().strip()
 
-    for char in data:
-        floor += 1 if char == '(' else -1
+floor = 0
+character_n = 1
+basement_reached = False
 
-        if not basement_reached and floor < 0:
-            # part 2 solution
-            print(f'Basement reached after {character_n} instructions.')
-            basement_reached = True
-        else:
-            character_n += 1
+for char in data:
+    floor += 1 if char == '(' else -1
 
-    # part 1 solution
-    print(f'Santa ends up at {floor}.')
+    if not basement_reached and floor < 0:
+        # part 2 solution
+        print(f'Basement reached after {character_n} instructions.')
+        basement_reached = True
+    else:
+        character_n += 1
+
+# part 1 solution
+print(f'Santa ends up at floor {floor}.')
