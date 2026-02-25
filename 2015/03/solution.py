@@ -18,13 +18,13 @@ with open("input.txt") as f:
     visited_set = {santa_coords}
 
     move_count = 0
-    for move in input:
+    for movement in input:
         # figure out direction and update position
-        if (move == '<'):
+        if (movement == '<'):
             santa_coords = move(santa_coords, 'west')
-        elif (move == '>'):
+        elif (movement == '>'):
             santa_coords = move(santa_coords, 'east')
-        elif (move == '^'):
+        elif (movement == '^'):
             santa_coords = move(santa_coords, 'north')
         else:
             santa_coords = move(santa_coords, 'south')
