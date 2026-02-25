@@ -19,3 +19,11 @@ Python lets you unpack an array (kinda like in JavaScript I guess) with
 ---
 Kinda obvious but you can return dictionaries from functions and access values with 
 `dictionary["value"]`.
+
+---
+In Python, you can just instantiate an array/list of **anything** by doing `list = []` without 
+needing to put anything inside of the brackets to determine what will be stored in there.
+Not knowing this was kinda screwing up my solution for Day 3 - part 1.
+
+---
+In Python, you can use a set `{}` to avoid having to check for element uniqueness in a list (with `if x not in list`). That's especially useful when keeping track of a number of coordinates (i.e. tuples) like in the solution for Day 3 - part 1. I was using a list of dictionaries first, because I didn't know I could just store the coordinates in a tuple.
