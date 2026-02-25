@@ -9,9 +9,11 @@ with open("input.txt") as f:
         floor += 1 if char == '(' else -1
 
         if not basement_reached and floor < 0:
+            # part 2 solution
             print(f'Basement reached after {character_n} instructions.')
             basement_reached = True
         else:
             character_n += 1
 
+    # part 1 solution
     print(f'Santa ends up at {floor}.')
