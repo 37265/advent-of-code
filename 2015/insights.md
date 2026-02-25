@@ -33,4 +33,7 @@ Python exposes an operator for unions of sets with `|` (single pipe). I was call
 
 Furthermore, it was a good idea to print the cardinality of the union of the two sets rather than conditionally adding coordinates to each set based on exclusivity. The union approach also makes both sets' contents more true to their purpose.
 
+---
+Python supports multi-line expressions by either putting `\` at the end of a line, or wrapping the entire expression in parentheses.
+
 ## Day 4
