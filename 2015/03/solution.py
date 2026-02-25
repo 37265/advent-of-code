@@ -1,3 +1,13 @@
+def move(coords, direction):
+    if direction == 'west':
+        return (coords[0]-1, coords[1])
+    if direction == 'east':
+        return (coords[0]+1, coords[1])
+    if direction == 'north':
+        return (coords[0], coords[1]+1)
+    if direction == 'south':
+        return (coords[0], coords[1]-1)
+
 with open("input.txt") as f:
     input = f.read()
 
@@ -11,13 +21,13 @@ with open("input.txt") as f:
     for move in input:
         # figure out direction and update position
         if (move == '<'):
-            santa_coords = (santa_coords[0] - 1, santa_coords[1])
+            santa_coords = move(santa_coords, 'west')
         elif (move == '>'):
-            santa_coords = (santa_coords[0] + 1, santa_coords[1])
+            santa_coords = move(santa_coords, 'east')
         elif (move == '^'):
-            santa_coords = (santa_coords[0], santa_coords[1] + 1)
+            santa_coords = move(santa_coords, 'north')
         else:
-            santa_coords = (santa_coords[0], santa_coords[1] - 1)
+            santa_coords = move(santa_coords, 'south')
 
         # visited_set.add((x, y))
         visited_set.add(santa_coords)       
