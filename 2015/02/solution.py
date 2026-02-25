@@ -23,7 +23,7 @@ def calculate_ribbon_length(line):
     
     return wraparound + bow
 
-# unpacks a line into an object of unsorted and sorted dimensions (reusability+)
+# unpacks a line into a dictionary of unsorted and sorted dimensions (reusability+)
 def line_to_dimensions(line):
     dimensions = list(map(int, line.split('x')))
     return {
