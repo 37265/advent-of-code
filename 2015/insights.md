@@ -88,3 +88,5 @@ for i := range vars {
 
 ---
 When you want to get a 'subslice' of a slice in Go, the 'end' (if specified) is exclusive. That means that, e.g., `slice[3 : len(slice)-1]` actually excludes the last `[whatever]` contained in the slice. I was unaware of this and it kept me from completing part 2 of Day 5.
+
+## Day 6

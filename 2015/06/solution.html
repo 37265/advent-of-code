@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 6</title>
+</head>
+
+<body 
+    style="
+        display: flex; 
+        flex-direction: column; 
+        align-items: center;
+        height: 100vh;
+        font-family: Helvetica, sans-serif;"
+>
+    <!-- Unused; too much effort -->
+    <!-- <h1>Image</h1>
+    <canvas 
+        id="canvas">
+    </canvas> -->
+
+    <p><strong>Part 1:</strong> <span class="num-lights">x </span>lights are lit.</p>
+    <p><strong>Part 2:</strong> Total brightness of all lights: <span class="brightness">x</span></p>
+</body>
+</html>
+
+<!-- Mistakes:
+    1. The starting coordinate in each line was being read as a string, causing the code to try to
+    index the grid by string rather than an int (resulting in `undefined`).
+    2. For turnOn and turnOff, I was accidentally cutting off the first digit of each x-coordinate
+    because I passed a starting index that was 1 too high to getCoordinates. 
+    This was causing the x-coordinates to be incorrect, and thus messing up the result. -->
+<script>
+    window.addEventListener('load', async () => {
+        const gridWidth = 1000;
+        const gridHeight = 1000;
+
+        const input = await readInputFile();
+        const grid = setUpGrid(gridWidth, gridHeight);
+        const grid2 = setUpGrid(gridWidth, gridHeight);
+        
+        (() => {
+            input.forEach(line => {
+                // prevent the last (empty) line from being processed
+                if (line.trim() !== '') {
+                    const {action, coordinates} = determineOperation(line, 1);
+                    action(coordinates);
+                }
+            });
+
+            input.forEach(line => {
+                // prevent the last (empty) line from being processed
+                if (line.trim() !== '') {
+                    const {action, coordinates} = determineOperation(line, 2);
+                    action(coordinates);
+                }
+            });
+
+            const nLightsSpan = document.querySelector('.num-lights');
+            const nLightsOn = countLightsOn();
+            nLightsSpan.innerHTML = `${nLightsOn} `;
+
+            const brightnessSpan = document.querySelector('.brightness');
+            const brightness = measureBrightness();
+            brightnessSpan.innerHTML = `${brightness}`;
+        })();
+
+        //#region helper methods
+        function determineOperation(line, part) {
+            let action, coordinates = null;
+
+            if (line.substring(0, 7) === 'turn on') {
+                action = part === 1 ? turnOn : turnUp;
+                coordinates = getCoordinates(line, 8);
+            } else if (line.substring(0, 8) === 'turn off') {
+                action = part === 1 ? turnOff : turnDown;
+                coordinates = getCoordinates(line, 9);
+            } else {
+                action = part === 1 ? toggle : toggleP2;
+                coordinates = getCoordinates(line, 7);
+            }
+
+            return {
+                'action': action,
+                'coordinates': coordinates
+            }
+        }
+
+        function getCoordinates(line, startIndex) {
+                const splitString = line.substring(startIndex).split(' ');
+                const fromCoords = splitString[0].split(',');
+                const toCoords = splitString[2].split(',');
+
+                return {
+                    'from': {
+                        x: parseInt(fromCoords[0]),
+                        y: parseInt(fromCoords[1])
+                    },
+                    'to': {
+                        x: parseInt(toCoords[0]),
+                        y: parseInt(toCoords[1])
+                    }
+                };
+        }
+        //#endregion
+
+        //#region part 1
+        function turnOn({from, to}) {
+            for (let i = from.x; i <= to.x; i++) {
+                for (let j = from.y; j <= to.y; j++) {
+                    grid[i][j] = 1;
+                }
+            }
+        }
+
+        function turnOff({from, to}) {
+            for (let i = from.x; i <= to.x; i++) {
+                for (let j = from.y; j <= to.y; j++) {
+                    grid[i][j] = 0;
+                }
+            }
+        }
+
+        function toggle({from, to}) {
+            for (let i = from.x; i <= to.x; i++) {
+                for (let j = from.y; j <= to.y; j++) {
+                    const pixel = grid[i][j];
+                    if (pixel === 0) {
+                        grid[i][j] = 1;
+                    } else if (pixel === 1) {
+                        grid[i][j] = 0;
+                    }
+                }
+            }
+        }
+
+        function countLightsOn() {
+            let nLightsOn = 0;
+
+            grid.forEach(column => {
+                column.forEach(light => {
+                    if (light === 1){
+                        nLightsOn++;
+                    }
+                })
+            })
+
+            return nLightsOn;
+        }
+        //#endregion
+
+        //#region part 2
+        function turnUp({from, to}) {
+            for (let i = from.x; i <= to.x; i++) {
+                for (let j = from.y; j <= to.y; j++) {
+                    grid2[i][j] += 1;
+                }
+            }
+        }
+
+        function turnDown({from, to}) {
+            for (let i = from.x; i <= to.x; i++) {
+                for (let j = from.y; j <= to.y; j++) {
+                    grid2[i][j] -= 1;
+                    if (grid2[i][j] < 0) grid2[i][j] = 0;
+                }
+            }
+        }
+
+        function toggleP2({from, to}) {
+            for (let i = from.x; i <= to.x; i++) {
+                for (let j = from.y; j <= to.y; j++) {
+                    grid2[i][j] += 2;
+                }
+            }
+        }
+
+        function measureBrightness() {
+            let brightness = 0;
+
+            grid2.forEach(column => {
+                column.forEach(light => {
+                    brightness += light;
+                })
+            })
+
+            return brightness;
+        }
+        //#endregion
+
+        //#region initial config
+        async function readInputFile() {
+            const res = await fetch('./input.txt');
+            const input = await res.text();
+            return input.split('\n');
+        }
+
+        function setUpGrid(width, height) {
+            const grid = [];
+
+            for (let x = 0; x < width; x++) {
+                grid[x] = [];
+
+                for (let y = 0; y < height; y++) {
+                    grid[x][y] = 0;
+                }
+            }
+
+            return grid;
+        }
+
+        // Unused; too much effort
+        // function configureCanvas() {
+        //     const gridWidth = 1000;
+        //     const gridHeight = 1000;
+
+        //     const canvas = document.querySelector('#canvas');
+        //     canvas.width = gridWidth;
+        //     canvas.height = gridHeight;
+
+        //     const context = canvas.getContext('2d');
+        //     const imageData = context.createImageData(gridWidth, gridHeight);
+        //     context.fillStyle = 'rgba(0, 0, 0)';
+
+        //     return [canvas, context, imageData];
+        // }
+        //#endregion
+    })
+</script>
